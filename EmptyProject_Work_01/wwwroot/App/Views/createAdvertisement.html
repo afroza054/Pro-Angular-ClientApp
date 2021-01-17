@@ -1,0 +1,63 @@
+﻿<div ng-controller="createProductCtrl">
+    <div class="card">
+        <div class="card-header">
+            <h3>Create Advertisement</h3>
+        </div>
+        <div class="card-body">
+            <div ng-show="newProductMsg" class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Success!</strong> Data inserted.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card-text">
+                <form name="frmCreateProduct" ng-submit="insertProduct(frmCreateProduct)" novalidate>
+                    <div class="form-group row">
+                        <label class="col-form-label col-form-label-sm col-2">Online Job Site</label>
+                        <div class="col-4">
+                            <select name="onlinejobsiteid" ng-options="item.onlinejobsite.OnlineJobSiteId as item.onlinejobsite.OnlineJobSiteName for item in model.onlinejobsites" class="form-control form-control-sm" ng-model="newProduct.OnlineJobSiteId" required>
+                                <option value="">Select</option>
+                            </select>
+                            <div class="text-danger" ng-show="frmCreateProduct.onlinejobsiteid.$error" ng-if="frmCreateProduct.onlinejobsiteid.$touched">
+                                <div ng-show="frmCreateProduct.onlinejobsiteid.$error.required">This field is requred.</div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-form-label-sm col-2">Advertisement Name</label>
+                        <div class="col-4">
+                            <input name="jobadvertisementname" type="text" class="form-control form-control-sm" ng-model="newProduct.JobAdvertisementName" required maxlength="50" />
+                            <div class="text-danger" ng-show="frmCreateProduct.jobadvertisementname.$error" ng-if="frmCreateProduct.jobadvertisementname.$touched">
+                                <div ng-show="frmCreateProduct.jobadvertisementname.$error.required">This field is requred.</div>
+                                <div ng-show="frmCreateProduct.jobadvertisementname.$error.maxlength">This field is requred.</div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-form-label-sm col-2">Type Name</label>
+                        <div class="col-4">
+                            <input name="typename" type="text" class="form-control form-control-sm" ng-model="newProduct.TypeName" required maxlength="50" />
+                            <div class="text-danger" ng-show="frmCreateProduct.typename.$error" ng-if="frmCreateProduct.typename.$touched">
+                                <div ng-show="frmCreateProduct.typename.$error.required">This field is requred.</div>
+                                <div ng-show="frmCreateProduct.typename.$error.maxlength">This field is requred.</div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group row">
+
+                        <div class="col-4 offset-2">
+                            <button type="submit" class="btn btn-primary" ng-disabled="frmCreateProduct.$invalid">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a ng-href="#!/onlinejobsite"><i class="fa fa-long-arrow-left"></i> Back to JobSite list</a>
+        </div>
+    </div>
+</div>

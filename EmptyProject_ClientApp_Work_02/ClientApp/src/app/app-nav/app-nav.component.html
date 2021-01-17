@@ -1,0 +1,34 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport>
+    <div class="user-view">
+      <mat-toolbar color="primary">
+        <a [routerLink]="['/home']" style="text-decoration:none">Online Job Site</a>
+    </mat-toolbar>
+      <mat-nav-list style="background-color:lightcoral;">
+        <a mat-list-item [routerLink]="['/home']"><span class="material-icons">account_balance</span>Home</a>
+        <a mat-list-item [routerLink]="['/onlinejobsite']"> <span class="material-icons">account_circle</span>Online Job</a>
+        <a mat-list-item [routerLink]="['/jobadvertisements']"><span class="material-icons">chrome_reader_mode</span>Advertisement</a>
+      </mat-nav-list>
+    </div>
+
+    <ng-material-multilevel-menu [configuration]='config' [items]='menuItems' (selectedItem)="selectedItem($event)">
+    </ng-material-multilevel-menu>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="accent">
+      <button type="button"
+              aria-label="Toggle sidenav"
+              mat-icon-button
+              (click)="drawer.toggle()">
+
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Online Job Site</span>
+    </mat-toolbar>
+    <div class="top-container">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,38 @@
+<mat-card class="mat-elevation-z8" style="background-image:url(../../../../assets/bg8.jpg);">
+  <mat-card-header>
+    <mat-card-title>Edit New Advertisement</mat-card-title>
+    <mat-card-subtitle>Fill up the form</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content style="background-color:lightcyan;" class="form-container">
+    <form [formGroup]="courseForm" class="form-group" (ngSubmit)="onSubmit()">
+      <mat-form-field class="f-w">
+        <mat-label>JobAdvertisement Name</mat-label>
+        <input matInput formControlName="JobAdvertisementName">
+        <mat-error *ngIf="f.JobAdvertisementName.touched && f.JobAdvertisementName.hasError('required')">Advertisement Name required.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="f-w">
+        <mat-label>Type Name</mat-label>
+        <input matInput formControlName="TypeName">
+        <mat-error *ngIf="f.TypeName.touched && f.TypeName.hasError('required')">Type Name required.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="f-w">
+        <mat-label>Job Site</mat-label>
+
+        <mat-select formControlName="OnlineJobSiteId">
+
+          <mat-option *ngFor="let op of onlinejobsites" [value]="op.OnlineJobSiteId">{{op.OnlineJobSiteName}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="f.OnlineJobSiteId.touched && f.OnlineJobSiteId.hasError('required')">Jobsite required.</mat-error>
+      </mat-form-field>
+      <div class="f-w">
+        <button type="submit" mat-raised-button color="primary">Save Data</button>
+      </div>
+    </form>
+  </mat-card-content>
+  <mat-card-footer style="background-color:lightcyan;">
+
+    <a mat-button [routerLink]="['/jobadvertisements']"><mat-icon>arrow_back_ios</mat-icon> Back to list</a>
+
+  </mat-card-footer>
+</mat-card>
+

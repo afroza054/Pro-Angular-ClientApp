@@ -1,0 +1,148 @@
+
+<mat-card class="mat-elevation-z8" style="background-image:url(../../../../assets/bg1.jpg);">
+  <mat-card-header>
+
+    <mat-card-title>Online JobSite</mat-card-title>
+    <mat-card-subtitle>List of Jobsite available</mat-card-subtitle>
+    
+
+  </mat-card-header>
+  <mat-card-content style="background-color:lightpink;">
+    <mat-divider></mat-divider>
+    <div style="display: flex; flex-direction: row; justify-content: flex-end; align-items: baseline; background-color:lightcoral;">
+      <mat-form-field>
+        <input matInput
+               (keyup)="applyFilter($event.target.value)"
+               placeholder="Search" />
+      </mat-form-field>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item [routerLink]="['/createOnline']">
+          <mat-icon>add</mat-icon>
+          <span>Create New Online</span>
+        </a>
+        <a mat-menu-item [routerLink]="['/createAdvertisement']">
+          <mat-icon>add</mat-icon>
+          <span>Create New Advertisement</span>
+        </a>
+
+      </mat-menu>
+    </div>
+    <table mat-table
+           #outerSort="matSort"
+           [dataSource]="dataSource"
+           multiTemplateDataRows
+           matSort>
+
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-flat-button (click)="toggleRow(element)">
+            <mat-icon>
+              {{
+          expandedElement === element ? "expand_less" : "expand_more"
+              }}
+            </mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="OnlineJobSiteName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>OnlineJobSite Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.OnlineJobSiteName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="StartedJourney">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Started Journey</th>
+        <td mat-cell *matCellDef="let element">{{ element.StartedJourney|date: 'MMM dd, yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Web">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Web</th>
+        <td mat-cell *matCellDef="let element">{{ element.Web}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Response">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Response?</th>
+        <td mat-cell *matCellDef="let element">{{ element.Response? 'Yes': 'No' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>...</th>
+        <td mat-cell *matCellDef="let element">
+          <a mat-icon-button color="primary" [routerLink]="['/editOnline', element.OnlineJobSiteId]">
+            <mat-icon>edit</mat-icon>
+          </a>&nbsp;
+          <button mat-icon-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell
+            *matCellDef="let element"
+            [attr.colspan]="columnsToDisplay.length">
+          <div class="example-element-detail"
+               *ngIf="element.Courses?.data.length"
+               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+            <div class="inner-table mat-elevation-z8" *ngIf="expandedElement">
+
+              <mat-card-subtitle style="">Advertisement</mat-card-subtitle>
+              <mat-divider></mat-divider>
+              <table #innerTables
+                     mat-table
+                     #innerSort="matSort"
+                     [dataSource]="element.JobAdvertisements"
+                     matSort>
+
+                <ng-container matColumnDef="JobAdvertisementName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    JobAdvertisement Name
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.JobAdvertisementName }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="TypeName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Type Name
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.TypeName }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>...</th>
+                  <td mat-cell *matCellDef="let element">
+                    <a mat-icon-button color="primary" [routerLink]="['/editAdvertisement', element.JobAdvertisementId]">
+                      <mat-icon>edit</mat-icon>
+                    </a>&nbsp;
+
+                    <button mat-mini-fab (click)="confirmDeleteCourse(element)" color="warn"><mat-icon>delete</mat-icon></button>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="innerDisplayedColumns"></tr>
+                <tr mat-row
+                    *matRowDef="let row; columns: innerDisplayedColumns"></tr>
+              </table>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row
+          *matRowDef="let element; columns: columnsToDisplay"></tr>
+      <tr mat-row
+          *matRowDef="let row; columns: ['expandedDetail']"
+          class="example-detail-row"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons></mat-paginator>
+  </mat-card-content>
+
+</mat-card>
+
+

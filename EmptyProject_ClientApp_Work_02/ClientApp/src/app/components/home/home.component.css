@@ -1,0 +1,8 @@
+.example-header-image {
+  background-image: url('../../../assets/nexusae0_default_wallpaper_thumb1.jpg');
+  background-size: contain;
+}
+
+.top-card {
+  margin: 25px 50px;
+}

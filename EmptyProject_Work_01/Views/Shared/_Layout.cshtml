@@ -1,0 +1,391 @@
+﻿<!DOCTYPE html>
+
+<html ng-app="projectApp">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <environment include="Development">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+        <link href="~/libs/bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <script src="~/libs/popper/umd/popper.js"></script>
+        <script src="~/libs/jquery/jquery.js"></script>
+        <link href="~/libs/datepicker/angular-datepicker.css" rel="stylesheet" />
+
+        <link href="~/libs/fontawesome/css/font-awesome.css" rel="stylesheet" />
+
+        <style>
+            body {
+                padding-top: 70px;
+                font-family: Roboto, "Helvetica Neue", sans-serif;
+            }
+        </style>
+        <link href="~/libs/fontawesome/css/font-awesome.css" rel="stylesheet" />
+    </environment>
+</head>
+<body ng-controller="outerCtrl">
+    <nav class="navbar navbar-light bg-warning navbar-expand-md fixed-top shadow-sm border-bottom">
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Online Job Site</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav nav">
+                <li class="nav-item"> <a class="nav-link" ng-href="#!/home">Home</a></li>
+
+                @*Show the view*@
+                <li class="nav-item"><a class="nav-link" ng-href="#!/onlinejobsite">Online Job Site</a></li>
+
+                @*NOT found by url*@
+                @*<li class="nav-item"><a class="nav-link" ng-href="#!/onlinejobsites">Hi</a></li>*@
+
+                @*<li class="nav-item"><a class="nav-link" ng-href="#!/createOnlineJobSite">Multi Create</a></li>
+                    <li class="nav-item"><a class="nav-link" ng-href="#!/createRegister">Create only Register</a></li>
+                    <li class="nav-item"><a class="nav-link" ng-href="#!/editOnlineJobSite/{id}">Multi Edit</a></li>
+                    <li class="nav-item"><a class="nav-link" ng-href="#!/editRegister/{id}">Edit Only Register</a></li>*@
+
+            </ul>
+        </div>
+    </nav>
+    @*<section class="bg-image" style="background-image: url('../../wwwroot/uploads/job3.jpg'); lighting-color:aqua;">*@
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+        <footer class="container-fluid bg-light">
+            @DateTime.Now.Year - &copy;AngularJS Application
+        </footer>
+        @*</section>*@
+        <div class="modal" tabindex="-1" role="dialog" id="delCompanyModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm Delete!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure to delete?</p>
+                        <div class="text-danger">This OnlineJob Site and its advertisements & registered applicant will be deleted?</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" ng-click="doDeleteCompany()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" tabindex="-1" role="dialog" id="delProductModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm Advertise Delete!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure to delete?</p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" ng-click="doDeleteProduct()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" tabindex="-1" role="dialog" id="delServiceModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm Delete!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure to delete?</p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" ng-click="doDeleteService()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <environment include="Development">
+            <script src="~/libs/bootstrap/js/bootstrap.js"></script>
+            <script src="~/libs/angular/angular.js"></script>
+            <script src="~/libs/angular/angular-animate.js"></script>
+            <script src="~/libs/angular/angular-aria.js"></script>
+            <script src="~/libs/angular/angular-messages.js"></script>
+            <script src="~/libs/angular/angular-route.js"></script>
+            <script src="~/libs/datepicker/angular-datepicker.js"></script>
+            <script src="~/libs/angular/angular-sanitize.js"></script>
+            <script src="~/libs/ui-bootstrap/ui-bootstrap.js"></script>
+            <script src="~/libs/ui-bootstrap/ui-bootstrap-tpls.js"></script>
+
+            <script>
+                angular.module("projectApp", ['ngRoute', 'ngMessages', 'ngSanitize', 'ngAnimate', "ui.bootstrap"])
+                    .constant("apiUrl", "/api/")
+                    .constant("customUrl", "/custom/")
+                    .config(($routeProvider) => {
+                        $routeProvider
+                            .when("/home", {
+                                templateUrl: "/App/Views/home.html"
+                            })
+                            .when("/onlinejobsite", {
+                                templateUrl: "/App/Views/onlinejobsite.html"
+                            })
+                            .when("/onlinejobsites", {
+                                templateUrl: "/App/Views/onlinejobsites.html"
+                            })
+                            .when("/createOnlineJobSite", {
+                                templateUrl: "/App/Views/createOnlineJobSite.html"
+                            })
+                            .when("/editOnlineJobSite/:id", {
+                                templateUrl: "/App/Views/editOnlineJobSite.html"
+                            })
+                            .when("/createAdvertisement", {
+                                templateUrl: "/App/Views/createAdvertisement.html"
+                            })
+                            .when("/editAdvertisement/:id", {
+                                templateUrl: "/App/Views/editAdvertisement.html"
+                            })
+                            .when("/editRegister/:id", {
+                                templateUrl: "/App/Views/editRegister.html"
+                            })
+                            .when("/createRegister", {
+                                templateUrl: "/App/Views/createRegister.html"
+                            })
+                            .otherwise({ redirectTo: '/home' });
+
+                    })
+                    .controller("outerCtrl", ($scope, ApiService, apiUrl, customUrl, onlinejobsiteService) => {
+                        //////////////////////////////
+                        $scope.erroMsg = null;
+                        $scope.model = {};
+                        $scope.currentPage = 1;
+                        $scope.totalItems = 1;
+                        ////////////////////////////////////ONLINEDATA for view
+                        onlinejobsiteService.getOnlinejobsiteWithAdvertisement()
+                            .then(r => {
+                                $scope.model.onlinejobsites = [];
+                                angular.forEach(r.data, (v, k) => {
+                                    $scope.model.onlinejobsites.push({ isExpanded: false, onlinejobsite: v });
+                                })
+                            }, err => {
+                                console.log(err);
+                            })
+                        //evets
+                        $scope.$on('serviceUpdated', (evt, data) => {
+                            //console.log('Event');
+                            //console.log(data.CompanyId);
+                            //console.log('Service Id' + data.ServiceId);
+                            angular.forEach($scope.model.onlinejobsites, function (v, k) {
+                                if (v.onlinejobsite.OnlineJobSiteId == data.OnlineJobSiteId) {
+                                    angular.forEach(v.onlinejobsite.RegisterApplicants, function (v1, k1) {
+                                        if (v1.RegisterApplicantId == data.RegisterApplicantId) {
+                                            angular.copy(data, v1);
+                                            console.log(v1);
+                                        }
+                                    });
+                                }
+                            })
+                        })
+                        //$scope.$on('serviceInserted', (evt, data) => {
+                        //    //console.log('Event');
+                        //    //console.log(data.CompanyId);
+                        //    //console.log('Service Id' + data.ServiceId);
+                        //    angular.forEach($scope.model.onlineJobSites, function (v, k) {
+                        //        if (v.onlineJobSite.OnlineJobSiteId == data.OnlineJobSiteId) {
+                        //            v.onlineJobSite.RegisterApplicants.push(data);
+                        //        }
+                        //    })
+                        //})
+
+                        $scope.$on('serviceInserted', (evt, data) => {
+                            //console.log('Event');
+                            //console.log(data.CompanyId);
+                            //console.log('Service Id' + data.ServiceId);
+                            angular.forEach($scope.model.onlinejobsites, function (v, k) {
+                                if (v.onlinejobsite.OnlineJobSiteId == data.OnlineJobSiteId) {
+                                    v.onlinejobsite.RegisterApplicants.push(data);
+                                }
+                            })
+                        })
+                        //$scope.$on('companyInserted', (evt, data) => {
+                        //    //console.log('Event');
+                        //    //console.log(data.CompanyId);
+                        //    //console.log('Service Id' + data.ServiceId);
+                        //    $scope.model.onlineJobSites.push({ isExpanded: false, onlineJobSite: data });
+                        //})
+                        $scope.$on('companyInserted', (evt, data) => {
+                            //console.log('Event');
+                            //console.log(data.CompanyId);
+                            //console.log('Service Id' + data.ServiceId);
+                            $scope.model.onlinejobsites.push({ isExpanded: false, onlinejobsite: data });
+                        })
+                        $scope.$on('productInserted', (evt, data) => {
+                            console.log('Event');
+                            //console.log(data.CompanyId);
+                            //console.log('Service Id' + data.ServiceId);
+                            angular.forEach($scope.model.onlinejobsites, function (v, k) {
+                                if (v.onlinejobsite.OnlineJobSiteId == data.OnlineJobSiteId) {
+                                    v.onlinejobsite.JobAdvertisements.push(data);
+                                }
+                            })
+                        });
+                        $scope.$on('productUpdated', (evt, data) => {
+                            console.log('Updated');
+                            //console.log(data.CompanyId);
+                            //console.log('Service Id' + data.ServiceId);
+                            angular.forEach($scope.model.onlinejobsites, function (v, k) {
+                                if (v.onlinejobsite.OnlineJobSiteId == data.OnlineJobSiteId) {
+                                    angular.forEach(v.onlinejobsite.JobAdvertisements, function (v1, k1) {
+                                        if (v1.JobAdvertisementId == data.JobAdvertisementId) {
+                                            angular.copy(data, v1);
+                                            console.log(v1);
+                                        }
+                                    });
+                                }
+                            })
+                        })
+                        $scope.$
+
+                        $scope.companyToDelete = null;
+
+                        //ApiService.get(customUrl + "OnlineJobSites", null)
+                        //    .then(r => {
+                        //        $scope.model.onlineJobSites = [];
+                        //        angular.forEach(r.data, (v, k) => {
+                        //            $scope.model.onlineJobSites.push({ isExpanded: false, onlineJobSite: v });
+                        //        });
+                        //        //console.log($scope.model.companies);
+                        //    }, err => {
+                        //        console.log(err);
+                        //    });
+                        ApiService.get(customUrl + "OnlineJobSites", null)
+                            .then(r => {
+                                $scope.model.onlinejobsites = [];
+                                angular.forEach(r.data, (v, k) => {
+                                    $scope.model.onlinejobsites.push({ isExpanded: false, onlinejobsite: v });
+                                });
+                                //console.log($scope.model.companies);
+                            }, err => {
+                                console.log(err);
+                            });
+                        //$scope.expandChild = (index) => {
+                        //    console.log(index);
+                        //    $scope.model.onlineJobSites[index].isExpanded = !$scope.model.onlineJobSites[index].isExpanded;
+                        //}
+                        $scope.deleteCompany = (index) => {
+                            $scope.companyToDelete = index;
+                            $("#delCompanyModal").modal('show');
+                        }
+                        //$scope.doDeleteCompany = () => {
+                        //    var onlineJobSiteId = $scope.model.onlineJobSites[$scope.companyToDelete].onlineJobSite.OnlineJobSiteId;
+                        //    ApiService.delete(apiUrl + "OnlineJobSites/" + onlineJobSiteId, null)
+                        //        .then(r => {
+                        //            $scope.model.onlineJobSites.splice($scope.companyToDelete, 1);
+                        //            $("#delCompanyModal").modal('hide');
+                        //        }, err => {
+                        //            console.log(err);
+                        //        });
+                        //}
+                        //THIS ALL FOR ONLINEJOBSITEVIEW click on plus button
+
+                        $scope.expandChild = (index) => {
+                            console.log(index);
+                            $scope.model.onlinejobsites[index].isExpanded = !$scope.model.onlinejobsites[index].isExpanded;
+                        }
+                        $scope.doDeleteCompany = () => {
+                            var onlineJobSiteId = $scope.model.onlinejobsites[$scope.companyToDelete].onlinejobsite.OnlineJobSiteId;
+                            ApiService.delete(apiUrl + "OnlineJobSites/" + onlineJobSiteId, null)
+                                .then(r => {
+                                    $scope.model.onlinejobsites.splice($scope.companyToDelete, 1);
+                                    $("#delCompanyModal").modal('hide');
+                                }, err => {
+                                    console.log(err);
+                                });
+                        }
+                        $scope.serviceToDelete = null;
+                        $scope.productToDelete = null;
+                        $scope.companySource = null;
+                        $scope.delIndex = null;
+
+
+                        //$scope.selectPage = function (pageNo) {
+                        //    $scope.currentPage = pageNo;
+                        //};
+                        $scope.delCompanyProduct = (onlineJobSiteid, pid, index) => {
+                            console.log(onlineJobSiteid);
+
+                            $scope.productToDelete = pid;
+                            $scope.companySource = onlineJobSiteid;
+                            $scope.delIndex = index;
+                            console.log($scope.companySource);
+                            $("#delProductModal").modal('show');
+                        }
+                        $scope.delCompanyService = (onlineJobSiteid, sid, index) => {
+                            $scope.serviceToDelete = sid;
+
+                            $scope.companySource = onlineJobSiteid;
+                            $scope.delIndex = index;
+                            console.log($scope.companySource);
+                            $("#delServiceModal").modal('show');
+                        }
+                        $scope.doDeleteProduct = () => {
+                            ApiService.delete(apiUrl + "JobAdvertisements/" + $scope.productToDelete, null)
+                                .then(r => {
+                                    angular.forEach($scope.model.onlinejobsites, (v, k) => {
+
+                                        if (v.onlinejobsite.OnlineJobSiteId == $scope.companySource) {
+
+                                            v.onlinejobsite.JobAdvertisements.splice($scope.delIndex, 1);
+                                        }
+                                    })
+                                    $scope.productToDelete = null;
+                                    $scope.companySource = null;
+                                    $scope.delIndex = null;
+
+                                    $("#delServiceModal").modal('hide');
+                                }, err => { })
+                        }
+
+                        //onlineJobSite
+
+                        $scope.doDeleteService = () => {
+                            ApiService.delete(apiUrl + "RegisterApplicants/" + $scope.serviceToDelete, null)
+                                .then(r => {
+                                    angular.forEach($scope.model.onlinejobsites, (v, k) => {
+
+                                        if (v.onlinejobsite.OnlineJobSiteId == $scope.companySource) {
+
+                                            v.onlinejobsite.RegisterApplicants.splice($scope.delIndex, 1);
+                                        }
+                                    })
+                                    $scope.serviceToDelete = null;
+                                    $scope.companySource = null;
+                                    $scope.delIndex = null;
+
+                                    $("#delServiceModal").modal('hide');
+                                }, err => { })
+                        }
+
+                    });
+            </script>
+            <script src="~/App/Services/onlinejobsiteService.js"></script>
+            <script src="~/App/Filters/filter.js"></script>
+            <script src="~/App/Services/ApiService.js"></script>
+            <script src="~/App/Controllers/createOnlineJobSiteCtrl.js"></script>
+            <script src="~/App/Controllers/createRegisterCtrl.js"></script>
+            <script src="~/App/Controllers/editOnlineJobSiteCtrl.js"></script>
+            <script src="~/App/Controllers/registerController.js"></script>
+            <script src="~/App/Controllers/createAdvertisement.js"></script>
+            <script src="~/App/Controllers/editAdvertisement.js"></script>
+        </environment>
+</body>
+</html>
